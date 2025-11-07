@@ -71,25 +71,28 @@
     </div>
   </div>
 
-  <script>
+    <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTH5bATEEkP8nElBduw5QxnT9_Tz2vvg7h06gUH7AHm1kInrRlLliAwzm7XpgCiWgD/exec';
 
     function selectDress(code, name) {
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          dress_code: code,
-          dress_name: name,
-          note: ''
-        })
+      const url = SCRIPT_URL
+        + '?dress_code=' + encodeURIComponent(code)
+        + '&dress_name=' + encodeURIComponent(name)
+        + '&note=' + encodeURIComponent('');
+
+      fetch(url, {
+        method: 'GET'
       })
-      .then(res => res.json())
-      .then(() => alert('บันทึกเรียบร้อยแล้ว ✅'))
-      .catch(() => alert('❌ ส่งไม่สำเร็จ ลองใหม่อีกครั้ง'));
+      .then(() => {
+        alert('บันทึกเรียบร้อยแล้ว ✅');
+      })
+      .catch(() => {
+        alert('ส่งไม่สำเร็จ ลองใหม่อีกครั้ง');
+      });
     }
   </script>
 
 </body>
 </html>
+
 
