@@ -1,98 +1,58 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <title>เลือกชุดแต่งงาน</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f7f3f1;
-      padding: 20px;
-    }
-    h2 {
-      color: #443322;
-      text-align: center;
-    }
-    .dress-list {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 12px;
-      width: 200px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.15);
-      text-align: center;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 6px;
-    }
-    .card button {
-      margin-top: 8px;
-      width: 100%;
-      padding: 8px;
-      background: #d5a46f;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .card button:hover {
-      background: #b18455;
-    }
+    body { font-family: sans-serif; padding: 24px; background:#f7f3f1; text-align:center; }
+    .dress-list{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .card{width:220px;background:#fff;padding:12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:left}
+    .card img{width:100%;height:250px;object-fit:cover;border-radius:6px}
+    .card button{width:100%;padding:8px;margin-top:8px;border:0;border-radius:6px;background:#c48c4b;color:#fff;cursor:pointer}
   </style>
 </head>
 <body>
-
   <h2>เลือกชุดแต่งงาน</h2>
-
   <div class="dress-list">
     <div class="card">
-      <img src="https://via.placeholder.com/200x250?text=WD-001" alt="WD-001">
+      <img src="https://via.placeholder.com/300x400?text=WD-001" alt="">
       <h4>WD-001 ชุดเจ้าสาว A-line</h4>
-      <button onclick="selectDress('WD-001', 'ชุดเจ้าสาว A-line')">เลือกชุดนี้</button>
+      <button onclick="selectDress('WD-001','ชุดเจ้าสาว A-line')">เลือกชุดนี้</button>
     </div>
 
     <div class="card">
-      <img src="https://via.placeholder.com/200x250?text=WD-002" alt="WD-002">
+      <img src="https://via.placeholder.com/300x400?text=WD-002" alt="">
       <h4>WD-002 ชุดหางปลา</h4>
-      <button onclick="selectDress('WD-002', 'ชุดหางปลา')">เลือกชุดนี้</button>
+      <button onclick="selectDress('WD-002','ชุดหางปลา')">เลือกชุดนี้</button>
     </div>
 
     <div class="card">
-      <img src="https://via.placeholder.com/200x250?text=WD-003" alt="WD-003">
+      <img src="https://via.placeholder.com/300x400?text=WD-003" alt="">
       <h4>WD-003 ชุดไทยเจ้าสาว</h4>
-      <button onclick="selectDress('WD-003', 'ชุดไทยเจ้าสาว')">เลือกชุดนี้</button>
+      <button onclick="selectDress('WD-003','ชุดไทยเจ้าสาว')">เลือกชุดนี้</button>
     </div>
   </div>
 
-    <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTH5bATEEkP8nElBduw5QxnT9_Tz2vvg7h06gUH7AHm1kInrRlLliAwzm7XpgCiWgD/exec';
+  <script>
+    // ใส่ URL เว็บแอปที่ได้หลัง Deploy (ให้ตรง /exec)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzQzDRFBF6MNUaoxr47cU8DMxkkIWS7vPfy2EWNmOooaILBrpTsVoXfkcprDGAg76W/exec';
 
     function selectDress(code, name) {
       const url = SCRIPT_URL
         + '?dress_code=' + encodeURIComponent(code)
         + '&dress_name=' + encodeURIComponent(name)
         + '&note=' + encodeURIComponent('');
-
-      fetch(url, {
-        method: 'GET'
-      })
-      .then(() => {
-        alert('บันทึกเรียบร้อยแล้ว ✅');
-      })
-      .catch(() => {
-        alert('ส่งไม่สำเร็จ ลองใหม่อีกครั้ง');
-      });
+      fetch(url, { method: 'GET' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.result === 'success') alert('บันทึกเรียบร้อย ✅');
+          else alert('ผิดพลาด: ' + (data.message || 'ไม่ทราบสาเหตุ'));
+        })
+        .catch(err => {
+          console.error(err);
+          alert('ส่งไม่สำเร็จ — ดู Console (F12) เพื่อดูรายละเอียด');
+        });
     }
   </script>
-
 </body>
 </html>
-
-
