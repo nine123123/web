@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เลือกชุดแต่งงาน</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f3f1;
+      padding: 20px;
+    }
+    h2 {
+      color: #443322;
+      text-align: center;
+    }
+    .dress-list {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      width: 200px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+    .card button {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      background: #d5a46f;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .card button:hover {
+      background: #b18455;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>เลือกชุดแต่งงาน</h2>
+
+  <div class="dress-list">
+    <div class="card">
+      <img src="https://via.placeholder.com/200x250?text=WD-001" alt="WD-001">
+      <h4>WD-001 ชุดเจ้าสาว A-line</h4>
+      <button onclick="selectDress('WD-001', 'ชุดเจ้าสาว A-line')">เลือกชุดนี้</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/200x250?text=WD-002" alt="WD-002">
+      <h4>WD-002 ชุดหางปลา</h4>
+      <button onclick="selectDress('WD-002', 'ชุดหางปลา')">เลือกชุดนี้</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/200x250?text=WD-003" alt="WD-003">
+      <h4>WD-003 ชุดไทยเจ้าสาว</h4>
+      <button onclick="selectDress('WD-003', 'ชุดไทยเจ้าสาว')">เลือกชุดนี้</button>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTH5bATEEkP8nElBduw5QxnT9_Tz2vvg7h06gUH7AHm1kInrRlLliAwzm7XpgCiWgD/exec';
+
+    function selectDress(code, name) {
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dress_code: code,
+          dress_name: name,
+          note: ''
+        })
+      })
+      .then(res => res.json())
+      .then(() => alert('บันทึกเรียบร้อยแล้ว ✅'))
+      .catch(() => alert('❌ ส่งไม่สำเร็จ ลองใหม่อีกครั้ง'));
+    }
+  </script>
+
+</body>
+</html>
