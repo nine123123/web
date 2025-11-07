@@ -34,25 +34,37 @@
   </div>
 
   <script>
-    // ใส่ URL เว็บแอปที่ได้หลัง Deploy (ให้ตรง /exec)
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzQzDRFBF6MNUaoxr47cU8DMxkkIWS7vPfy2EWNmOooaILBrpTsVoXfkcprDGAg76W/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz.../exec'; // ใส่ของคุณ
 
-    function selectDress(code, name) {
-      const url = SCRIPT_URL
-        + '?dress_code=' + encodeURIComponent(code)
-        + '&dress_name=' + encodeURIComponent(name)
-        + '&note=' + encodeURIComponent('');
-      fetch(url, { method: 'GET' })
-        .then(res => res.json())
-        .then(data => {
-          if (data.result === 'success') alert('บันทึกเรียบร้อย ✅');
-          else alert('ผิดพลาด: ' + (data.message || 'ไม่ทราบสาเหตุ'));
-        })
-        .catch(err => {
-          console.error(err);
-          alert('ส่งไม่สำเร็จ — ดู Console (F12) เพื่อดูรายละเอียด');
-        });
-    }
-  </script>
+  function selectDress(code, name) {
+    const callbackName = 'gsCallback_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    window[callbackName] = function(data) {
+      // ทำความสะอาด script & callback หลังใช้
+      try { 
+        if (data && data.result === 'success') alert('บันทึกเรียบร้อย ✅');
+        else alert('ผิดพลาด: ' + (data.message || 'ไม่ทราบสาเหตุ'));
+      } finally {
+        // ลบ callback และ script tag
+        delete window[callbackName];
+        var s = document.getElementById(callbackName + '_script');
+        if (s) s.remove();
+      }
+    };
+
+    const url = SCRIPT_URL
+      + '?dress_code=' + encodeURIComponent(code)
+      + '&dress_name=' + encodeURIComponent(name)
+      + '&note=' + encodeURIComponent('')
+      + '&callback=' + callbackName;
+
+    var script = document.createElement('script');
+    script.src = url;
+    script.id = callbackName + '_script';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
 </body>
 </html>
+
